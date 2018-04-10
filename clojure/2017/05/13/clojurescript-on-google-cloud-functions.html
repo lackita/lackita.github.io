@@ -156,7 +156,7 @@ but there are two problems right now with that: it expects the
 javascript to be in the directory where the command is run and it
 expects the file to be named <code class="highlighter-rouge">index.js</code>. The former I resolved by
 changing the command to
-<code class="highlighter-rouge">gcloud beta functions deploy greet --local-path target --stage-bucket demo_staging --trigger-http</code>.
+<code class="highlighter-rouge">gcloud beta functions deploy greet --source target --stage-bucket demo_staging --trigger-http</code>.
 For the latter I’ll switch the build command to <code class="highlighter-rouge">boot cljs --optimizations simple --ids index target</code>.</p>
 
 <p>Now to get this all a bit more operationalized. I’d like to be able to
