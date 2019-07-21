@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-ruby RUBY_VERSION
+ruby "2.5.3"
 
 # Hello! This is where you manage which Jekyll version is used to run.
 # When you want to use a different version, change it below, save the
@@ -20,9 +20,10 @@ gem "minima", "~> 2.0"
 
 # If you have any plugins, put them here!
 group :jekyll_plugins do
-   gem "jekyll-feed", "~> 0.6"
-   gem "jekyll-youtube"
-   gem 'octopress-codeblock'
+  gem "github-pages"
+  gem "jekyll-feed", "~> 0.6"
+  gem "jekyll-youtube"
+  gem 'octopress-codeblock'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
