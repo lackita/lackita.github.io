@@ -24,14 +24,15 @@ $ git worktree add $GIT_ROOT/_site/ master
 ```
 
 Now, when I publish, I just have to push up a separate commit after
-building. You could make this a shell script if you want, but it's
-simple enough I might just do it in the future.
+building. It's a shell script, but it has no conditionals and I
+completely understand what it's doing.
 
 ```
-$ jekyll build
-$ pushd _site
-$ git add .
-$ git commit -m 'Deploy'
-$ git push origin master
-$ popd
+#!/bin/sh
+jekyll build
+pushd _site
+git add .
+git commit -m 'Deploy'
+git push origin master
+popd
 ```
