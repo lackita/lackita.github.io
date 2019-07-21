@@ -28,7 +28,7 @@ building. It's a shell script, but it has no conditionals and I
 completely understand what it's doing.
 
 ```
-#!/bin/sh
+#!/bin/bash
 jekyll build
 pushd _site
 git add .
