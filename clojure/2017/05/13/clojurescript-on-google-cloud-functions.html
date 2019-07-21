@@ -1,3 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>ClojureScript On Google Cloud Functions</title>
+  <meta name="description" content="I wanted to try out Google Cloud Functions, and when I saw that it only supported JavaScript I thought “What a perfect opportunity to try ClojureScript as we...">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="http://blog.colinwilliams.name/clojure/2017/05/13/clojurescript-on-google-cloud-functions.html">
+  <link rel="alternate" type="application/rss+xml" title="Public Notes" href="/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/">Public Notes</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+            <a class="page-link" href="/about/">About</a>
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1>ClojureScript On Google Cloud Functions</h1>
+
+<p>I wanted to try out <a href="https://cloud.google.com/functions/">Google Cloud Functions</a>,
+and when I saw that it only supported JavaScript I thought “What a
+perfect opportunity to try <a href="https://github.com/clojure/clojurescript">ClojureScript</a>
+as well. I could have imitated (https://github.com/MartinSahlen/cloud-functions-clojure)
+and that would have been fine, but I started going through the
+<a href="https://github.com/magomimmo/modern-cljs">Modern ClojureScript Tutorials</a>
+and got taken by <a href="https://github.com/boot-clj">boot</a>. (See how easy it
+is for me to get lost down a rabbit hole?)</p>
+
+<p>Ultimately, I’m only going to end up having two files:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.
+├── build.boot
+└── src
+    └── cljs
+        └── demo
+            └── core.cljs
+</code></pre>
+</div>
+<p>I did this in phases, figuring out one piece at a time. I’ll be
+walking you through that process, as I think it will make the
+information easier to digest.</p>
+
+<p>To begin with I just wanted to get a minimal ClojureScript project
+going. Most of this part is lifted straight from
+<a href="https://github.com/magomimmo/modern-cljs/blob/master/doc/second-edition/tutorial-01.md">Tutorial 1 of Modern ClojureScript</a>,
+but even simpler because I don’t need an html file. I’m not going to
+repeat what’s explained in the tutorial, he does a much better job of
+describing what’s going on.</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="c1">;; core.cljs
+</span><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">demo.core</span><span class="p">)</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">greet</span><span class="w"> </span><span class="p">[</span><span class="n">req</span><span class="w"> </span><span class="n">res</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"hey"</span><span class="p">)</span><span class="w">
+  </span><span class="p">(</span><span class="nf">.json</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="p">(</span><span class="nf">clj-&gt;js</span><span class="w"> </span><span class="p">(</span><span class="no">:headers</span><span class="w"> </span><span class="n">req</span><span class="p">))))</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">enable-console-print!</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="c1">;; build.boot
+</span><span class="p">(</span><span class="nf">set-env!</span><span class="w">
+ </span><span class="no">:source-paths</span><span class="w"> </span><span class="o">#</span><span class="p">{</span><span class="s">"src/cljs"</span><span class="p">}</span><span class="w">
+ </span><span class="no">:dependencies</span><span class="w"> </span><span class="o">'</span><span class="p">[[</span><span class="n">adzerk/boot-cljs</span><span class="w"> </span><span class="s">"1.7.228-2"</span><span class="p">]])</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">adzerk.boot-cljs</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">cljs</span><span class="p">]])</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>Now to start making it possible for cloud functions to be able to run
+this function. There’s a command line tool that we’ll get to later,
+but for now let’s focus on just being able to paste in some raw
+javascript. First, for cloud functions to be able to call <code class="highlighter-rouge">greet</code> it
+needs to be added to the export module. Once I figured out what I was
+looking for, it was pretty easy to pull out of
+<code class="highlighter-rouge">cloud-functions-clojure</code> and add to the end of <code class="highlighter-rouge">core.cljs</code>:</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="nf">set!</span><span class="w"> </span><span class="p">(</span><span class="nf">.-exports</span><span class="w"> </span><span class="n">js/module</span><span class="p">)</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:greet</span><span class="w"> </span><span class="n">greet</span><span class="p">})</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>With that in place, I ran <code class="highlighter-rouge">boot cljs --optimizations simple target</code> to
+generate the JavaScript. The nuance here is <code class="highlighter-rouge">--optimizations simple</code>,
+without that, it will use the optimization <code class="highlighter-rouge">none</code> which will scatter
+the code across several files. With the optimization, all the code I
+need is generated in <code class="highlighter-rouge">target/main.js</code>. Then I headed over to Google’s
+cloud console, and set up a new function. Made the trigger an HTTP
+trigger, pasted the contents of <code class="highlighter-rouge">main.js</code> into the inline editor and
+set the function to execute to <code class="highlighter-rouge">greet</code>.</p>
+
+<p>So I have valid javascript generated, but it’s pretty annoying to be
+pasting into a text box to deploy a new version. Next up, I used
+the gcloud cli to deploy automatically. The command I want to use
+is <code class="highlighter-rouge">gcloud beta functions deploy greet --stage-bucket demo_staging --trigger-http</code>,
+but there are two problems right now with that: it expects the
+javascript to be in the directory where the command is run and it
+expects the file to be named <code class="highlighter-rouge">index.js</code>. The former I resolved by
+changing the command to
+<code class="highlighter-rouge">gcloud beta functions deploy greet --local-path target --stage-bucket demo_staging --trigger-http</code>.
+For the latter I’ll switch the build command to <code class="highlighter-rouge">boot cljs --optimizations simple --ids index target</code>.</p>
+
+<p>Now to get this all a bit more operationalized. I’d like to be able to
+just say <code class="highlighter-rouge">boot deploy -f greet</code>, but first I need to understand how to
+create new tasks. <code class="highlighter-rouge">deftask</code> will allows me to build the command, and a
+less documented function in boot called <code class="highlighter-rouge">dosh</code> allows me to execute
+the gcloud command. I used <code class="highlighter-rouge">with-pre-wrap</code> to make it easier to pass
+the fileset object down the stack, as well as ensure that a deploy
+happens before any tasks chained with it are called. This is added to
+the end of <code class="highlighter-rouge">build.boot</code>.</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="nf">deftask</span><span class="w"> </span><span class="n">deploy</span><span class="w"> </span><span class="p">[</span><span class="n">f</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="nb">str</span><span class="w"> </span><span class="s">"Function to deploy"</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">comp</span><span class="w"> </span><span class="p">(</span><span class="nf">cljs</span><span class="w"> </span><span class="no">:optimizations</span><span class="w"> </span><span class="no">:simple</span><span class="w"> </span><span class="no">:ids</span><span class="w"> </span><span class="o">#</span><span class="p">{</span><span class="s">"index"</span><span class="p">})</span><span class="w">
+  </span><span class="p">(</span><span class="nf">target</span><span class="p">)</span><span class="w">
+  </span><span class="p">(</span><span class="nf">with-pre-wrap</span><span class="w"> </span><span class="n">fileset</span><span class="w">
+    </span><span class="p">(</span><span class="nf">dosh</span><span class="w"> </span><span class="s">"gcloud"</span><span class="w"> </span><span class="s">"beta"</span><span class="w"> </span><span class="s">"functions"</span><span class="w"> </span><span class="s">"deploy"</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="s">"--local-path"</span><span class="w"> </span><span class="s">"target"</span><span class="w">
+          </span><span class="s">"--stage-bucket"</span><span class="w"> </span><span class="s">"demo_staging"</span><span class="w"> </span><span class="s">"--trigger-http"</span><span class="p">)</span><span class="w">
+    </span><span class="n">fileset</span><span class="p">)))</span><span class="w">
+</span></code></pre>
+</div>
+
+
 <div id="disqus_thread"></div>
 <script>
 	/**
@@ -20,3 +190,61 @@
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 	}
 
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Public Notes</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Public Notes
+            
+            </li>
+            
+            <li><a href="mailto:colin@colinwilliams.name">colin@colinwilliams.name</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/jekyll"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jekyll</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/jekyllrb"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">jekyllrb</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Rather than trying to generate content I think people will find generally interesting, I have decided to switch to publishing my notes on whatever I happen to be working on.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

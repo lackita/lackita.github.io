@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://blog.colinwilliams.name/feed.xml" rel="self" type="application/atom+xml" /><link href="http://blog.colinwilliams.name/" rel="alternate" type="text/html" /><updated>2019-07-21T11:49:51-04:00</updated><id>http://blog.colinwilliams.name/</id><title type="html">Public Notes</title><subtitle>Rather than trying to generate content I think people will find generally interesting, I have decided to switch to publishing my notes on whatever I happen to be working on.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://blog.colinwilliams.name/feed.xml" rel="self" type="application/atom+xml" /><link href="http://blog.colinwilliams.name/" rel="alternate" type="text/html" /><updated>2019-07-21T12:24:30-04:00</updated><id>http://blog.colinwilliams.name/</id><title type="html">Public Notes</title><subtitle>Rather than trying to generate content I think people will find generally interesting, I have decided to switch to publishing my notes on whatever I happen to be working on.
 </subtitle><entry><title type="html">Simple Locally Compiled GitHub Pages</title><link href="http://blog.colinwilliams.name/gh-pages/2019/07/21/simple-locally-compiled-github-pages.html" rel="alternate" type="text/html" title="Simple Locally Compiled GitHub Pages" /><published>2019-07-21T07:36:43-04:00</published><updated>2019-07-21T07:36:43-04:00</updated><id>http://blog.colinwilliams.name/gh-pages/2019/07/21/simple-locally-compiled-github-pages</id><content type="html" xml:base="http://blog.colinwilliams.name/gh-pages/2019/07/21/simple-locally-compiled-github-pages.html">&lt;p&gt;Sometimes it just takes too long to do something easy. It’s been a
 couple years since this blog was active, and when I tried to publish a
 post I couldn’t remember how I did it. It was clear &lt;code class=&quot;highlighter-rouge&quot;&gt;docs&lt;/code&gt; was the
@@ -17,15 +17,16 @@ worktree. I created a worktree called &lt;code class=&quot;highlighter-rouge&quo
 &lt;/div&gt;
 
 &lt;p&gt;Now, when I publish, I just have to push up a separate commit after
-building. You could make this a shell script if you want, but it’s
-simple enough I might just do it in the future.&lt;/p&gt;
+building. It’s a shell script, but it has no conditionals and I
+completely understand what it’s doing.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ jekyll build
-$ pushd _site
-$ git add .
-$ git commit -m 'Deploy'
-$ git push origin master
-$ popd
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+jekyll build
+&lt;span class=&quot;nb&quot;&gt;pushd &lt;/span&gt;_site
+git add .
+git commit -m &lt;span class=&quot;s1&quot;&gt;'Deploy'&lt;/span&gt;
+git push origin master
+&lt;span class=&quot;nb&quot;&gt;popd&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;</content><author><name></name></author><summary type="html">Sometimes it just takes too long to do something easy. It’s been a couple years since this blog was active, and when I tried to publish a post I couldn’t remember how I did it. It was clear docs was the source branch and master was the compiled site, but I couldn’t remember how to easily do that.</summary></entry><entry><title type="html">How I Want to Program</title><link href="http://blog.colinwilliams.name/interactive/2019/07/21/how-i-want-to-program.html" rel="alternate" type="text/html" title="How I Want to Program" /><published>2019-07-21T06:04:31-04:00</published><updated>2019-07-21T06:04:31-04:00</updated><id>http://blog.colinwilliams.name/interactive/2019/07/21/how-i-want-to-program</id><content type="html" xml:base="http://blog.colinwilliams.name/interactive/2019/07/21/how-i-want-to-program.html">&lt;p&gt;Programming is hard. We all know it’s difficult to keep this kind of
 complexity in our heads, but are we making it too hard on ourselves? I

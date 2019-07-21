@@ -1,3 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>How to Study Design Patterns</title>
+  <meta name="description" content="One of the schisms in the development community is between devotees and detractors of the book Design Patterns. For those unfamiliar with the book, it curate...">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="http://blog.colinwilliams.name/craftsmanship/design-patterns/2015/03/14/how-to-study-design-patterns.html">
+  <link rel="alternate" type="application/rss+xml" title="Public Notes" href="/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/">Public Notes</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+            <a class="page-link" href="/about/">About</a>
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1>How to Study Design Patterns</h1>
+
+<p>One of the schisms in the development community is between devotees and detractors of the book <a href="http://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612/ref=sr_1_1?ie=UTF8&amp;qid=1426390303&amp;sr=8-1&amp;keywords=design+patterns">Design Patterns</a>. For those unfamiliar with the book, it curates several patterns that arise frequently in OOD, describing when it is appropriate to use them.</p>
+
+<p>As it turns out, there’s a similar rift in the game of Go around <a href="http://en.wikipedia.org/wiki/Joseki">Joseki</a>. In <a href="http://en.wikipedia.org/wiki/Toshiro_Kageyama">Toshiro Kageyama</a>’s amazing book <a href="http://www.amazon.com/Lessons-Fundamentals-Beginner-Elementary-Books/dp/4906574289">Lessons in the Fundamentals of Go</a>, there is a chapter titled “How to Study Joseki”, which reconciles the two positions.</p>
+
+<p>In this article, we will be looking at how these ideas can be applied to Design Patterns. We will also spend some time applying this approach to a pattern, to see how these ideas work in practice.</p>
+
+<h2 id="how-not-to-use-design-patterns">How <em>not</em> to Use Design Patterns</h2>
+<p>Consider the greenhorn developer, having just read the book cover to cover. He sees a situation looking similar to the State pattern, and sets to work applying it. Let’s take a look at his code:</p>
+
+<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="kd">class</span> <span class="nc">EquilateralPolygon</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">private</span> <span class="n">Geometry</span> <span class="n">geometry</span><span class="o">;</span>
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">public</span> <span class="nf">EquilateralPolygon</span><span class="o">(</span><span class="n">String</span> <span class="n">geometry_name</span><span class="o">,</span> <span class="kt">double</span> <span class="n">side_length</span><span class="o">)</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">if</span> <span class="o">(</span><span class="n">geometry_name</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"square"</span><span class="o">))</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">	    <span class="n">geometry</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Square</span><span class="o">(</span><span class="n">side_length</span><span class="o">);</span>
+</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="o">&#x7d;</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">geometry_name</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"triangle"</span><span class="o">))</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">	    <span class="n">geometry</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Triangle</span><span class="o">(</span><span class="n">side_length</span><span class="o">);</span>
+</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="o">&#x7d;</span>
+</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="o">&#x7d;</span>
+</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">public</span> <span class="kt">double</span> <span class="nf">area</span><span class="o">()</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">return</span> <span class="n">geometry</span><span class="o">.</span><span class="na">area</span><span class="o">();</span>
+</div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="o">&#x7d;</span>
+</div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="o">&#x7d;</span>
+</div></div><div data-line="16" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="17" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="kd">interface</span> <span class="nc">Geometry</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="18" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kt">double</span> <span class="nf">area</span><span class="o">();</span>
+</div></div><div data-line="19" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="o">&#x7d;</span>
+</div></div><div data-line="20" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="21" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="kd">class</span> <span class="nc">Square</span> <span class="kd">implements</span> <span class="n">Geometry</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="22" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">private</span> <span class="kt">double</span> <span class="n">side_length</span><span class="o">;</span>
+</div></div><div data-line="23" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">public</span> <span class="nf">Square</span><span class="o">(</span><span class="kt">double</span> <span class="n">side_length</span><span class="o">)</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="24" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">this</span><span class="o">.</span><span class="na">side_length</span> <span class="o">=</span> <span class="n">side_length</span><span class="o">;</span>
+</div></div><div data-line="25" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="o">&#x7d;</span>
+</div></div><div data-line="26" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="27" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">public</span> <span class="kt">double</span> <span class="nf">area</span><span class="o">()</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="28" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">return</span> <span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">side_length</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span> <span class="o">*</span> <span class="n">Math</span><span class="o">.</span><span class="na">sqrt</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span> <span class="o">/</span> <span class="mi">4</span><span class="o">;</span>
+</div></div><div data-line="29" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="o">&#x7d;</span>
+</div></div><div data-line="30" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="o">&#x7d;</span>
+</div></div><div data-line="31" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="32" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="kd">class</span> <span class="nc">Triangle</span> <span class="kd">implements</span> <span class="n">Geometry</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="33" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">private</span> <span class="kt">double</span> <span class="n">side_length</span><span class="o">;</span>
+</div></div><div data-line="34" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">public</span> <span class="nf">Triangle</span><span class="o">(</span><span class="kt">double</span> <span class="n">side_length</span><span class="o">)</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="35" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">this</span><span class="o">.</span><span class="na">side_length</span> <span class="o">=</span> <span class="n">side_length</span><span class="o">;</span>
+</div></div><div data-line="36" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="o">&#x7d;</span>
+</div></div><div data-line="37" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="38" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">public</span> <span class="kt">double</span> <span class="nf">area</span><span class="o">()</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="39" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">return</span> <span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">side_length</span><span class="o">,</span> <span class="mi">2</span><span class="o">);</span>
+</div></div><div data-line="40" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="o">&#x7d;</span>
+</div></div><div data-line="41" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="o">&#x7d;</span></div></div></pre></div></figure>
+
+<p>This reveals a poor understanding of its underlying purpose. The State pattern is intended to allow the subclass of state to change throughout the life of the object, otherwise it needlessly adds complexity.  It would have been much better to do this instead:</p>
+
+<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">EquilateralPolygon</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">protected</span> <span class="kt">double</span> <span class="n">side_length</span><span class="o">;</span>
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">public</span> <span class="nf">EquilateralPolygon</span><span class="o">(</span><span class="kt">double</span> <span class="n">side_length</span><span class="o">)</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">this</span><span class="o">.</span><span class="na">side_length</span> <span class="o">=</span> <span class="n">side_length</span><span class="o">;</span>
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="o">&#x7d;</span>
+</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">double</span> <span class="nf">area</span><span class="o">();</span>
+</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="o">&#x7d;</span>
+</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="kd">class</span> <span class="nc">Square</span> <span class="kd">extends</span> <span class="n">EquilateralPolygon</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">public</span> <span class="nf">Square</span><span class="o">(</span><span class="kt">double</span> <span class="n">side_length</span><span class="o">)</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="kd">super</span><span class="o">(</span><span class="n">side_length</span><span class="o">);</span>
+</div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="o">&#x7d;</span>
+</div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">public</span> <span class="kt">double</span> <span class="nf">area</span><span class="o">()</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="16" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">return</span> <span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">side_length</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span> <span class="o">*</span> <span class="n">Math</span><span class="o">.</span><span class="na">sqrt</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span> <span class="o">/</span> <span class="mi">4</span><span class="o">;</span>
+</div></div><div data-line="17" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="o">&#x7d;</span>
+</div></div><div data-line="18" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="o">&#x7d;</span>
+</div></div><div data-line="19" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="20" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="kd">class</span> <span class="nc">Triangle</span> <span class="kd">extends</span> <span class="n">EquilateralPolygon</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="21" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">public</span> <span class="nf">Triangle</span><span class="o">(</span><span class="kt">double</span> <span class="n">side_length</span><span class="o">)</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="22" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="kd">super</span><span class="o">(</span><span class="n">side_length</span><span class="o">);</span>
+</div></div><div data-line="23" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="o">&#x7d;</span>
+</div></div><div data-line="24" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="25" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">public</span> <span class="kt">double</span> <span class="nf">area</span><span class="o">()</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="26" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">return</span> <span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">side_length</span><span class="o">,</span> <span class="mi">2</span><span class="o">);</span>
+</div></div><div data-line="27" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="o">&#x7d;</span>
+</div></div><div data-line="28" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="o">&#x7d;</span></div></div></pre></div></figure>
+
+<p>Situations like this are asource of depare in experienced developers, causing the opinion that studying Design Patterns is misleading and damaging to designs. They may even mutter something about how nothing can replace experience.</p>
+
+<h1 id="the-proper-way-to-study-design-patterns">The Proper Way to Study Design Patterns</h1>
+<ol>
+  <li>Don’t just read the pattern, a deeper understanding is required to apply it correctly.</li>
+  <li>Each pattern is intended to solve a specific problem. Examine every line of an idealized implementation and contemplate the implications of every conceivable variation.</li>
+  <li>Consider how surrounding context can influence the needs of the pattern. A variation isn’t necessarily invalid if external factors introduce additional needs.</li>
+</ol>
+
+<p>Put another way, the 23 published Design Patterns are by no means a definitive list, and there is endless variation even within covered patterns. There are thousands of slight variations to these patterns in the world, with more being created daily. The only hope one has of putting them into practice is to have a deep understanding of their intent.</p>
+
+<h1 id="case-study-the-memento-pattern">Case Study: The Memento Pattern</h1>
+<p>Let’s look at the Memento Pattern to better understand this approach.  Keep in mind that this is not a complete treatment of the pattern, but a sample to give you an idea.  I encourage you to continue studying the pattern independently.</p>
+
+<p>The first step in studying any pattern is reading about it. If you have the book, you should go through the relevant section now. Now let’s look at an idealized version of the pattern in java:</p>
+
+<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="kd">class</span> <span class="nc">Memento</span> <span class="o">&#x7b;&#x7d;</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="kd">class</span> <span class="nc">Originator</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">private</span> <span class="n">Object</span> <span class="n">state</span><span class="o">;</span>
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setMemento</span><span class="o">(</span><span class="n">Memento</span> <span class="n">m</span><span class="o">)</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="n">state</span> <span class="o">=</span> <span class="o">((</span><span class="n">OriginatorMemento</span><span class="o">)</span> <span class="n">m</span><span class="o">).</span><span class="na">getState</span><span class="o">();</span>
+</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="o">&#x7d;</span>
+</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">public</span> <span class="n">Memento</span> <span class="nf">createMemento</span><span class="o">()</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">return</span> <span class="k">new</span> <span class="nf">OriginatorMemento</span><span class="o">(</span><span class="n">state</span><span class="o">);</span>
+</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="o">&#x7d;</span>
+</div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">private</span> <span class="kd">class</span> <span class="nc">OriginatorMemento</span> <span class="kd">extends</span> <span class="n">Memento</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="kd">private</span> <span class="n">Object</span> <span class="n">state</span><span class="o">;</span>
+</div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="kd">public</span> <span class="nf">OriginatorMemento</span><span class="o">(</span><span class="n">Object</span> <span class="n">state</span><span class="o">)</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="16" class="code-highlight-row numbered"><div class="code-highlight-line">	    <span class="k">this</span><span class="o">.</span><span class="na">state</span> <span class="o">=</span> <span class="n">state</span><span class="o">;</span>
+</div></div><div data-line="17" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="o">&#x7d;</span>
+</div></div><div data-line="18" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="19" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="kd">public</span> <span class="n">Object</span> <span class="nf">getState</span><span class="o">()</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="20" class="code-highlight-row numbered"><div class="code-highlight-line">	    <span class="k">return</span> <span class="n">state</span><span class="o">;</span>
+</div></div><div data-line="21" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="o">&#x7d;</span>
+</div></div><div data-line="22" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="o">&#x7d;</span>
+</div></div><div data-line="23" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="o">&#x7d;</span>
+</div></div><div data-line="24" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="25" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="kd">class</span> <span class="nc">CareTaker</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="26" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">interact</span><span class="o">()</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="27" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="n">Originator</span> <span class="n">o</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Originator</span><span class="o">();</span>
+</div></div><div data-line="28" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="n">Memento</span> <span class="n">m</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="na">createMemento</span><span class="o">();</span>
+</div></div><div data-line="29" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="n">o</span><span class="o">.</span><span class="na">setMemento</span><span class="o">(</span><span class="n">m</span><span class="o">);</span>
+</div></div><div data-line="30" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="o">&#x7d;</span>
+</div></div><div data-line="31" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="o">&#x7d;</span></div></div></pre></div></figure>
+
+<h2 id="varying-visibility">Varying Visibility</h2>
+<p>OriginatorMemento’s visibility is private to Originator, which is designed hide the mechanics of Originator from the outside world. If we made the class public, how would that affect the pattern?  For one thing, it would create a way to mutate Originator outside of its official interface. This could cause problems if the implementation needs to be changed, such as for performance or adding new features.</p>
+
+<p>Now let’s think about the broader context, is there anything that could make us want to modify the visibility? Suppose we want to use Originator as a base class, in which subclasses have implementations which vary enough that the original state no longer makes sense. This seems like a reasonable scenario for switching the visibility to protected.</p>
+
+<p>Is there a broader context in which making OriginatorMemento public is a good idea? My gut reaction is no, as a crucial piece of the pattern is the ability to hide internal implementation.  If that state can be modified outside of the Originator, we might as well do this instead:</p>
+
+<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="kd">class</span> <span class="nc">Originator</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">private</span> <span class="n">Object</span> <span class="n">state</span><span class="o">;</span>
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setState</span><span class="o">(</span><span class="n">Object</span> <span class="n">s</span><span class="o">)</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="n">state</span> <span class="o">=</span> <span class="n">s</span><span class="o">;</span>
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="o">&#x7d;</span>
+</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">getState</span><span class="o">()</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">return</span> <span class="n">state</span><span class="o">;</span>
+</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="o">&#x7d;</span>
+</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="o">&#x7d;</span>
+</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="kd">class</span> <span class="nc">CareTaker</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">interact</span><span class="o">()</span> <span class="o">&#x7b;</span>
+</div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="n">Originator</span> <span class="n">o</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Originator</span><span class="o">();</span>
+</div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="n">Object</span> <span class="n">s</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="na">getState</span><span class="o">();</span>
+</div></div><div data-line="16" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="n">o</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+</div></div><div data-line="17" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="o">&#x7d;</span>
+</div></div><div data-line="18" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="o">&#x7d;</span></div></div></pre></div></figure>
+
+
 <div id="disqus_thread"></div>
 <script>
 	/**
@@ -20,3 +226,61 @@
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 	}
 
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Public Notes</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Public Notes
+            
+            </li>
+            
+            <li><a href="mailto:colin@colinwilliams.name">colin@colinwilliams.name</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/jekyll"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jekyll</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/jekyllrb"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">jekyllrb</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Rather than trying to generate content I think people will find generally interesting, I have decided to switch to publishing my notes on whatever I happen to be working on.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
