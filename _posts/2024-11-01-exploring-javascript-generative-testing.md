@@ -22,6 +22,7 @@ const result = check(
 )
 ```
 
+
 I suppose I could write something to look at that result, but that can be a little clunky when I'm looking to use this frequently. It does offer test framework integration, but because it was last updated 6 years ago it doesn't support [Vitest](https://vitest.dev/) which appears to be the current front runner.
 
 I can still wrap it in a test with an expectation, though, so still pretty easy to play around with:
