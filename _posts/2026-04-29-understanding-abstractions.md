@@ -13,7 +13,7 @@ To illustrate this concept, I'm going to provide an example from a
 recent project I've been working on. On a Go board, adjacent points in
 same state are considered connected:
 
-![A 5x5 annotated Go board in this configuration: NNNNN/BBBN(4)N/WWB(1)NN/NWW(3)B(2)B/N(5)NWWB](/images/go-groups.png)
+![A 5x5 annotated Go board in this configuration: NNNNN/BBBN(4)N/WWB(1)NN/NWW(3)B(2)B/N(5)NWWB](/images/go-groups.png){: width="250" }
 
 So the groups marked 1, 2 and 3 are each distinct in this regard. I'm
 also going to refer to 4 and 5 as connected groups, this is useful for
